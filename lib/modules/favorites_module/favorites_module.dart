@@ -8,10 +8,15 @@ import 'package:shop_app/modules/layout/layout_cubit/layout_states.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/style/colors.dart';
 
-class FavoritesScreen extends StatelessWidget {
-  FavoritesScreen({Key? key}) : super(key: key);
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({Key? key}) : super(key: key);
 
-  List<String> categories = ['Summer', 'T-Shirts', 'Shirts', 'Pants'];
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,6 +26,9 @@ class FavoritesScreen extends StatelessWidget {
     return BlocConsumer<LayoutCubit, LayoutStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        final TabController _tabsController =
+            TabController(length: 5, vsync: this);
+
         var cubit = LayoutCubit.get(context);
         return Scaffold(
           appBar: AppBar(
@@ -66,18 +74,22 @@ class FavoritesScreen extends StatelessWidget {
                           top: 8.0,
                           bottom: 8.0,
                         ),
-                        height: 52.0,
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) =>
-                              buildCategoryContainer(
-                            cubit.categoriesModel!.data!.categories[index],
-                          ),
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(width: 13.0),
-                          itemCount:
-                              cubit.categoriesModel!.data!.categories.length,
+                        height: 62.0,
+                        child: TabBar(
+                          isScrollable: true,
+                          controller: _tabsController,
+                          tabs: [
+                            buildCategoryContainer(
+                                cubit.categoriesModel!.data!.categories[0]),
+                            buildCategoryContainer(
+                                cubit.categoriesModel!.data!.categories[1]),
+                            buildCategoryContainer(
+                                cubit.categoriesModel!.data!.categories[2]),
+                            buildCategoryContainer(
+                                cubit.categoriesModel!.data!.categories[3]),
+                            buildCategoryContainer(
+                                cubit.categoriesModel!.data!.categories[4]),
+                          ],
                         ),
                       ),
                       Padding(
@@ -135,39 +147,188 @@ class FavoritesScreen extends StatelessWidget {
                     condition: cubit.favoritesModel != null,
                     builder: (context) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: cubit.isGridView
-                          ? GridView.count(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              crossAxisCount: 2,
-                              physics: const BouncingScrollPhysics(),
-                              mainAxisSpacing: 18.0,
-                              crossAxisSpacing: 19.0,
-                              childAspectRatio: 0.59,
-                              children: cubit.favoritesModel!.data!.favorites
-                                  .map(
-                                    (element) => buildFavoriteProductGridItem(
-                                      element,
+                      child: TabBarView(
+                          controller: _tabsController,
+                          children: cubit.isGridView
+                              ? [
+                                  GridView.count(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    crossAxisCount: 2,
+                                    physics: const BouncingScrollPhysics(),
+                                    mainAxisSpacing: 18.0,
+                                    crossAxisSpacing: 19.0,
+                                    childAspectRatio: 0.59,
+                                    children:
+                                        cubit.favoritesModel!.data!.favorites
+                                            .map(
+                                              (element) =>
+                                                  buildFavoriteProductGridItem(
+                                                element,
+                                                cubit,
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                  GridView.count(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    crossAxisCount: 2,
+                                    physics: const BouncingScrollPhysics(),
+                                    mainAxisSpacing: 18.0,
+                                    crossAxisSpacing: 19.0,
+                                    childAspectRatio: 0.59,
+                                    children:
+                                        cubit.favoritesModel!.data!.favorites
+                                            .map(
+                                              (element) =>
+                                                  buildFavoriteProductGridItem(
+                                                element,
+                                                cubit,
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                  GridView.count(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    crossAxisCount: 2,
+                                    physics: const BouncingScrollPhysics(),
+                                    mainAxisSpacing: 18.0,
+                                    crossAxisSpacing: 19.0,
+                                    childAspectRatio: 0.59,
+                                    children:
+                                        cubit.favoritesModel!.data!.favorites
+                                            .map(
+                                              (element) =>
+                                                  buildFavoriteProductGridItem(
+                                                element,
+                                                cubit,
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                  GridView.count(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    crossAxisCount: 2,
+                                    physics: const BouncingScrollPhysics(),
+                                    mainAxisSpacing: 18.0,
+                                    crossAxisSpacing: 19.0,
+                                    childAspectRatio: 0.59,
+                                    children:
+                                        cubit.favoritesModel!.data!.favorites
+                                            .map(
+                                              (element) =>
+                                                  buildFavoriteProductGridItem(
+                                                element,
+                                                cubit,
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                  GridView.count(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    crossAxisCount: 2,
+                                    physics: const BouncingScrollPhysics(),
+                                    mainAxisSpacing: 18.0,
+                                    crossAxisSpacing: 19.0,
+                                    childAspectRatio: 0.59,
+                                    children:
+                                        cubit.favoritesModel!.data!.favorites
+                                            .map(
+                                              (element) =>
+                                                  buildFavoriteProductGridItem(
+                                                element,
+                                                cubit,
+                                              ),
+                                            )
+                                            .toList(),
+                                  ),
+                                ]
+                              : [
+                                  ListView.separated(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 60.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildFavoriteProductListItem(
+                                      cubit.favoritesModel!.data!
+                                          .favorites[index],
                                       cubit,
                                     ),
-                                  )
-                                  .toList(),
-                            )
-                          : ListView.separated(
-                              padding: const EdgeInsets.only(
-                                top: 16.0,
-                                bottom: 60.0,
-                              ),
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) =>
-                                  buildFavoriteProductListItem(
-                                cubit.favoritesModel!.data!.favorites[index],
-                                cubit,
-                              ),
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16.0),
-                              itemCount:
-                                  cubit.favoritesModel!.data!.favorites.length,
-                            ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 16.0),
+                                    itemCount: cubit
+                                        .favoritesModel!.data!.favorites.length,
+                                  ),
+                                  ListView.separated(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 60.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildFavoriteProductListItem(
+                                      cubit.favoritesModel!.data!
+                                          .favorites[index],
+                                      cubit,
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 16.0),
+                                    itemCount: cubit
+                                        .favoritesModel!.data!.favorites.length,
+                                  ),
+                                  ListView.separated(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 60.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildFavoriteProductListItem(
+                                      cubit.favoritesModel!.data!
+                                          .favorites[index],
+                                      cubit,
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 16.0),
+                                    itemCount: cubit
+                                        .favoritesModel!.data!.favorites.length,
+                                  ),
+                                  ListView.separated(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 60.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildFavoriteProductListItem(
+                                      cubit.favoritesModel!.data!
+                                          .favorites[index],
+                                      cubit,
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 16.0),
+                                    itemCount: cubit
+                                        .favoritesModel!.data!.favorites.length,
+                                  ),
+                                  ListView.separated(
+                                    padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      bottom: 60.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildFavoriteProductListItem(
+                                      cubit.favoritesModel!.data!
+                                          .favorites[index],
+                                      cubit,
+                                    ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 16.0),
+                                    itemCount: cubit
+                                        .favoritesModel!.data!.favorites.length,
+                                  ),
+                                ]),
                     ),
                     fallback: (context) => const Center(
                       child: CircularProgressIndicator(),
@@ -375,6 +536,7 @@ class FavoritesScreen extends StatelessWidget {
           ],
         ),
       );
+
   Widget buildFavoriteProductGridItem(
           FavoriteModel element, LayoutCubit cubit) =>
       Stack(

@@ -195,7 +195,7 @@ class RegisterScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () => cubit.signUp(),
                             child: Container(
                               width: 92.0,
                               height: 64.0,

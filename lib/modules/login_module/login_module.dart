@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/modules/layout/layout_screen.dart';
 import 'package:shop_app/modules/login_module/login_cubit/login_cubit.dart';
 import 'package:shop_app/modules/login_module/login_cubit/login_states.dart';
+import 'package:shop_app/modules/register_module/register_module.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/style/colors.dart';
@@ -136,7 +137,20 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 32.0),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Don\'t have an account?'),
+                          TextButton(
+                            child: const Text('REGISTER'),
+                            onPressed: () {
+                              navigateTo(context, RegisterScreen());
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
                       customButton(
                         child: state is LoginLoadingState
                             ? const SizedBox(
@@ -170,7 +184,7 @@ class LoginScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () => cubit.signIn(),
                             child: Container(
                               width: 92.0,
                               height: 64.0,

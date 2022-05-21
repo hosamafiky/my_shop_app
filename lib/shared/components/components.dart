@@ -224,6 +224,7 @@ Widget buildProductsListItem(
     );
 Widget buildCategoryContainer(CategoryModel category) => Container(
       width: 100.0,
+      height: 70.0,
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
         vertical: 5.0,

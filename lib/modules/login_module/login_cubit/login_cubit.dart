@@ -4,6 +4,7 @@ import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/login_module/login_cubit/login_states.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/network/remote/end_points.dart';
+import 'package:shop_app/shared/network/remote/google_signin.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginInitialState());
@@ -28,6 +29,10 @@ class LoginCubit extends Cubit<LoginStates> {
       isFieldEmpty = true;
       emit(LoginCheckFieldEmptyState());
     }
+  }
+
+  Future signIn() async {
+    await GoogleSignInApi.login();
   }
 
   LoginModel? loginModel;
