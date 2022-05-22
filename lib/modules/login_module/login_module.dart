@@ -5,6 +5,7 @@ import 'package:shop_app/modules/login_module/login_cubit/login_cubit.dart';
 import 'package:shop_app/modules/login_module/login_cubit/login_states.dart';
 import 'package:shop_app/modules/register_module/register_module.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/components/constants.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/style/colors.dart';
 
@@ -32,6 +33,8 @@ class LoginScreen extends StatelessWidget {
                 CacheHelper.saveData(
                         key: 'token', value: state.loginModel.data!.token)
                     .then((value) => {
+                          token = state.loginModel.data!.token!,
+                          print(token),
                           navigateTo(
                             context,
                             const ShopLayout(),
@@ -141,7 +144,12 @@ class LoginScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Don\'t have an account?'),
+                          const Text(
+                            'Don\'t have an account?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                           TextButton(
                             child: const Text('REGISTER'),
                             onPressed: () {
@@ -184,7 +192,7 @@ class LoginScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () => cubit.signIn(),
+                            onTap: () => cubit.googleSignIn(context),
                             child: Container(
                               width: 92.0,
                               height: 64.0,
@@ -205,7 +213,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 16.0),
                           InkWell(
-                            onTap: () {},
+                            onTap: () => cubit.facebookSignIn(),
                             child: Container(
                               width: 92.0,
                               height: 64.0,

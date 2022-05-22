@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:shop_app/models/facebook_login_model.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/login_module/login_cubit/login_states.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
@@ -31,8 +33,26 @@ class LoginCubit extends Cubit<LoginStates> {
     }
   }
 
-  Future signIn() async {
-    await GoogleSignInApi.login();
+  FbData? fbData;
+  Future facebookSignIn() async {
+    FacebookAuth.instance.login().then((value) {
+      if (value.status == LoginStatus.success) {
+        FacebookAuth.instance.getUserData().then((value) {
+          fbData = FbData.fromJson(value);
+          userLogin(email: fbData!.email!, password: '123456');
+        });
+      }
+    });
+  }
+
+  Future googleSignIn(context) async {
+    final user = await GoogleSignInApi.login();
+    if (user == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Sign in Failed')));
+    } else {
+      userLogin(email: user.email, password: '123456');
+    }
   }
 
   LoginModel? loginModel;
@@ -46,6 +66,7 @@ class LoginCubit extends Cubit<LoginStates> {
       'password': password,
     }).then((value) {
       loginModel = LoginModel.fromJson(value.data);
+      print(loginModel!.data!.name);
       emit(LoginSuccessState(loginModel!));
     }).catchError((error) {
       print(error.toString());

@@ -14,7 +14,6 @@ import 'package:shop_app/modules/shop_module/shop_module.dart';
 import 'package:shop_app/shared/components/constants.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/network/remote/end_points.dart';
-import 'package:shop_app/shared/network/remote/google_signin.dart';
 
 class LayoutCubit extends Cubit<LayoutStates> {
   LayoutCubit() : super(LayoutInitialState());

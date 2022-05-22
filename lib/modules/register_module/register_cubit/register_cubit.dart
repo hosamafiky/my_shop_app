@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/models/facebook_login_model.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/register_module/register_cubit/register_states.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/network/remote/end_points.dart';
 import 'package:shop_app/shared/network/remote/google_signin.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit() : super(RegisterInitialState());
@@ -33,15 +35,37 @@ class RegisterCubit extends Cubit<RegisterStates> {
     }
   }
 
-  Future signUp() async {
+  Future googleSignUp(context) async {
     final user = await GoogleSignInApi.login();
 
-    userRegister(
-      name: user!.displayName!,
-      email: user.email,
-      password: '123456',
-      phone: '0100${Random().nextInt(9000000) + 1000000}',
-    );
+    if (user != null) {
+      userRegister(
+        name: user.displayName!,
+        email: user.email,
+        password: '123456',
+        phone: '0100${Random().nextInt(9000000) + 1000000}',
+      );
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Sign in Failed')));
+    }
+  }
+
+  FbData? fbData;
+  Future facebookSignUp() async {
+    FacebookAuth.instance.login().then((value) {
+      if (value.status == LoginStatus.success) {
+        FacebookAuth.instance.getUserData().then((value) {
+          fbData = FbData.fromJson(value);
+          userRegister(
+            name: fbData!.name!,
+            email: fbData!.email!,
+            password: '123456',
+            phone: '0100${Random().nextInt(9000000) + 1000000}',
+          );
+        });
+      }
+    });
   }
 
   LoginModel? loginModel;
